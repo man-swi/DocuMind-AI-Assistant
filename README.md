@@ -80,19 +80,19 @@ Here are some screenshots showing how the **DocuMind AI Assistant** works:
 
 1. **Chatbot Interface**:  
    This image shows the main interface where the chatbot assistant interacts with the user. It’s the place where all conversations happen.  
-   ![Chatbot Interface](path_to_image/chatbot_interface.png)
+   ![documind](https://github.com/user-attachments/assets/5bda6293-31ba-42d6-8cc7-5dba474ad54a)
 
 2. **Extracted Text**:  
    This image displays the extracted text from a document, providing insights and summaries to the user.  
-   ![Extracted Text](path_to_image/extracted_text.png)
+   ![extracted](https://github.com/user-attachments/assets/e6d548fd-8bb9-4f3d-86e6-8f35efc12e53)
 
 3. **Settings Option**:  
    This screenshot shows the settings section where users can print the output or change the theme of the assistant interface.  
-   ![Settings Option](path_to_image/settings_option.png)
+   ![settings](https://github.com/user-attachments/assets/eede0b43-3a29-4944-ae74-3a0749617c37)
 
 4. **Chat Feature with Save/Download**:  
    This image shows the chat section where users can ask questions, and the assistant can save the conversation data for later download or printing.  
-   ![Chat Feature](path_to_image/chat_feature.png)
+   ![chat answers](https://github.com/user-attachments/assets/6bf63eb8-4f8e-4c97-bb5a-1c9bca570ec4)
 
 ---
 
