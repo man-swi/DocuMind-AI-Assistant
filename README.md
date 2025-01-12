@@ -1,6 +1,6 @@
-# DocuMind AI Assistant
+# DocuMind AI Assistant 📚
 
-📚 **DocuMind AI Assistant** is an intelligent document analysis and interactive AI chatbot that helps users extract key insights, analyze content, and ask questions about the document's information in real-time. The app supports PDF, Word, and Image files, making document processing easier and more interactive.
+**DocuMind AI Assistant** is an intelligent document analysis and interactive AI chatbot that helps users extract key insights, analyze content, and ask questions about the document's information in real-time. The app supports PDF, Word, and Image files, making document processing easier and more interactive.
 
 ---
 
@@ -17,9 +17,8 @@
 To get the **DocuMind AI Assistant** up and running on your local machine, follow these steps:
 
 ### Prerequisites
-
 Ensure you have the following installed:
-- **Python 3.7+** 
+- **Python 3.7+**
 - **pip** (Python package installer)
 
 ### Installation Steps
@@ -87,3 +86,44 @@ This project uses a combination of technologies to build the interactive and int
 - **Pillow**: Image processing library used for handling and manipulating images.
 
 ---
+
+## 🧑‍💻 Code Overview
+
+Here is a breakdown of the main components of the project:
+
+### `app.py`
+This is the main entry point for the application. It initializes the Streamlit interface, handles user inputs, and calls relevant functions to process the documents and interact with the AI.
+
+### `utils.py`
+Contains utility functions such as document processing (PDF, Word, Image), AI interactions, and file validation.
+
+### `Mistral_API.py`
+Handles interaction with the Mistral AI API for document analysis and generating responses to user queries.
+
+---
+
+## 📄 Example Code
+
+```python
+import streamlit as st
+from utils import process_document, get_ai_response
+
+st.title("DocuMind AI Assistant")
+st.subheader("Upload a document to analyze it")
+
+uploaded_file = st.file_uploader("Choose a document...", type=["pdf", "docx", "png", "jpg"])
+
+if uploaded_file:
+    # Process uploaded document
+    document_text = process_document(uploaded_file)
+    
+    # Display extracted document content
+    st.write("Document Content:")
+    st.write(document_text)
+
+    # AI Chat
+    user_input = st.text_input("Ask a question about the document:")
+    if user_input:
+        ai_response = get_ai_response(user_input, document_text)
+        st.write("AI Response:")
+        st.write(ai_response)
