@@ -87,10 +87,3 @@ This project uses a combination of technologies to build the interactive and int
 - **Pillow**: Image processing library used for handling and manipulating images.
 
 ---
-
-## 🛠 Setup Instructions for Developers
-
-### File Structure
-
-The project is organized as follows:
-
