@@ -5,3 +5,4 @@ python-docx==0.8.11
 Pillow==11.1.0
 pytesseract==0.3.9
 python-dotenv==0.19.2
+altair==4.2.2
