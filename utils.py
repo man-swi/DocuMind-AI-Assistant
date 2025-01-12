@@ -1,7 +1,10 @@
 import os
 from dotenv import load_dotenv
 import requests
-from PyPDF2 import PdfReader
+try:
+    from PyPDF2 import PdfReader
+except ImportError:
+    from PyPDF2 import PdfFileReader as PdfReader
 from docx import Document
 from pytesseract import image_to_string
 from PIL import Image
