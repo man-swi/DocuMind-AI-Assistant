@@ -1,6 +1,6 @@
-# DocuMind AI Assistant 📚
+# DocuMind AI Assistant
 
-**DocuMind AI Assistant** is an intelligent document analysis and interactive AI chatbot that helps users extract key insights, analyze content, and ask questions about the document's information in real-time. The app supports PDF, Word, and Image files, making document processing easier and more interactive.
+📚 **DocuMind AI Assistant** is an intelligent document analysis and interactive AI chatbot that helps users extract key insights, analyze content, and ask questions about the document's information in real-time. The app supports PDF, Word, and Image files, making document processing easier and more interactive.
 
 ---
 
@@ -17,8 +17,9 @@
 To get the **DocuMind AI Assistant** up and running on your local machine, follow these steps:
 
 ### Prerequisites
+
 Ensure you have the following installed:
-- **Python 3.7+**
+- **Python 3.7+** 
 - **pip** (Python package installer)
 
 ### Installation Steps
@@ -51,7 +52,7 @@ Ensure you have the following installed:
 
 ## 🖥 Running the App
 
-To launch the DocuMind AI Assistant locally, follow these steps:
+To launch the **DocuMind AI Assistant** locally, follow these steps:
 
 1. **Start the Streamlit app**:
     ```bash
@@ -59,7 +60,7 @@ To launch the DocuMind AI Assistant locally, follow these steps:
     ```
 
 2. **Open the app in your browser**:
-    - Go to [http://localhost:8501](http://localhost:8501) to interact with the DocuMind AI Assistant.
+    - Go to [http://localhost:8501](http://localhost:8501) to interact with the **DocuMind AI Assistant**.
 
 ---
 
@@ -70,6 +71,28 @@ To launch the DocuMind AI Assistant locally, follow these steps:
 
 ### Interactive Chat
 - Engage with the assistant by asking questions about the document’s content. The AI will respond intelligently, providing answers based on the document's contents.
+
+---
+
+## 🖼 Project Screenshots
+
+Here are some screenshots showing how the **DocuMind AI Assistant** works:
+
+1. **Chatbot Interface**:  
+   This image shows the main interface where the chatbot assistant interacts with the user. It’s the place where all conversations happen.  
+   ![Chatbot Interface](path_to_image/chatbot_interface.png)
+
+2. **Extracted Text**:  
+   This image displays the extracted text from a document, providing insights and summaries to the user.  
+   ![Extracted Text](path_to_image/extracted_text.png)
+
+3. **Settings Option**:  
+   This screenshot shows the settings section where users can print the output or change the theme of the assistant interface.  
+   ![Settings Option](path_to_image/settings_option.png)
+
+4. **Chat Feature with Save/Download**:  
+   This image shows the chat section where users can ask questions, and the assistant can save the conversation data for later download or printing.  
+   ![Chat Feature](path_to_image/chat_feature.png)
 
 ---
 
@@ -87,43 +110,3 @@ This project uses a combination of technologies to build the interactive and int
 
 ---
 
-## 🧑‍💻 Code Overview
-
-Here is a breakdown of the main components of the project:
-
-### `app.py`
-This is the main entry point for the application. It initializes the Streamlit interface, handles user inputs, and calls relevant functions to process the documents and interact with the AI.
-
-### `utils.py`
-Contains utility functions such as document processing (PDF, Word, Image), AI interactions, and file validation.
-
-### `Mistral_API.py`
-Handles interaction with the Mistral AI API for document analysis and generating responses to user queries.
-
----
-
-## 📄 Example Code
-
-```python
-import streamlit as st
-from utils import process_document, get_ai_response
-
-st.title("DocuMind AI Assistant")
-st.subheader("Upload a document to analyze it")
-
-uploaded_file = st.file_uploader("Choose a document...", type=["pdf", "docx", "png", "jpg"])
-
-if uploaded_file:
-    # Process uploaded document
-    document_text = process_document(uploaded_file)
-    
-    # Display extracted document content
-    st.write("Document Content:")
-    st.write(document_text)
-
-    # AI Chat
-    user_input = st.text_input("Ask a question about the document:")
-    if user_input:
-        ai_response = get_ai_response(user_input, document_text)
-        st.write("AI Response:")
-        st.write(ai_response)
