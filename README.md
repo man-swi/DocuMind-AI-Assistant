@@ -30,7 +30,7 @@ Ensure you have the following installed:
     cd DocuMind-AI-Assistant
     ```
 
-2. **Create a virtual environment** (optional but recommended):
+2. **Create a virtual environment**:
     ```bash
     python -m venv venv
     source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
