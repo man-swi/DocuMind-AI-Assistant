@@ -1,18 +1,31 @@
 import os
 import time
 import streamlit as st
-from utils import extract_text_from_file, analyze_text_with_ai, chat_with_document, preprocess_text
+from utils import (
+    extract_text_from_file,
+    analyze_text_with_ai,
+    chat_with_document,
+    preprocess_text,
+    setup_vector_db,
+    store_document,
+    generate_embedding
+)
+from dotenv import load_dotenv
 
+# Loading environment variables from .env file
+load_dotenv()
+
+# API Key setup for Mistral AI
 API_KEY = os.getenv("MISTRAL_API_KEY")
 
-# Setting page configuration
+# Streamlit page
 st.set_page_config(
     page_title="DocuMind AI Assistant",
     page_icon="📚",
     layout="wide"
 )
 
-# Custom CSS for better styling
+# Custom CSS for styling
 st.markdown("""
     <style>
         .main-header {
@@ -51,9 +64,14 @@ with col3:
 # Divider
 st.markdown("---")
 
-# Initializing session state for storing extracted text
+# Initializing session state for storing extracted text and vector DB
 if 'extracted_text' not in st.session_state:
     st.session_state.extracted_text = None
+
+if 'vector_db' not in st.session_state:
+    index, embeddings = setup_vector_db([])  # Initializing vector database
+    st.session_state.vector_db = index  # FAISS index
+    st.session_state.embeddings = embeddings
 
 # File Uploading Section
 st.markdown("### 📎 Upload Your Document")
@@ -69,6 +87,10 @@ if uploaded_file:
     else:
         # Preprocessing text before displaying
         processed_text = preprocess_text(st.session_state.extracted_text)
+
+        # Generating embedding and store document
+        embedding = generate_embedding(st.session_state.extracted_text)
+        store_document(st.session_state.vector_db, st.session_state.extracted_text, embedding)
 
         # Creating tabs for different functionalities
         tab1, tab2 = st.tabs(["📊 Document Analysis", "💬 Chat with Document"])
@@ -96,11 +118,11 @@ if uploaded_file:
             st.markdown("### 💭 Chat with your Document")
             st.info("Ask anything about your document! I'll help you find the information you need.")
             
-            # Initialize chat history
+            # Initializing chat history
             if "messages" not in st.session_state:
                 st.session_state.messages = []
 
-            # Display chat history
+            # Displaying chat history
             for message in st.session_state.messages:
                 with st.chat_message(message["role"]):
                     st.markdown(message["content"])
@@ -114,7 +136,7 @@ if uploaded_file:
                 with st.chat_message("assistant"):
                     with st.spinner("🤔 Thinking..."):
                         start_time = time.time()
-                        response = chat_with_document(question, processed_text)
+                        response = chat_with_document(question, st.session_state.vector_db)
                         response_time = time.time() - start_time
                         if isinstance(response, dict) and "error" in response:
                             st.error(f"❌ Error: {response['error']}")
@@ -124,15 +146,14 @@ if uploaded_file:
                             st.info(f"⚡ Response generated in {response_time:.2f} seconds")
 
 else:
-    
     st.info("👋 Welcome to DocuMind AI Assistant!")
     
     st.markdown("""
     #### 🚀 Getting Started:
-    1. Upload your document using the file uploader above
+    1. Upload your document using the file uploader above.
     2. Choose from two powerful features:
-        * 📊 **Document Analysis**: Get comprehensive insights and summaries
-        * 💬 **Interactive Chat**: Ask questions and get instant answers
+        * 📊 **Document Analysis**: Get comprehensive insights and summaries.
+        * 💬 **Interactive Chat**: Ask questions and get instant answers.
     
     #### 📁 Supported Formats:
     * PDF Documents (*.pdf)
@@ -140,10 +161,10 @@ else:
     * Images (*.jpg, *.jpeg, *.png)
     
     #### ✨ Features:
-    * Smart text extraction
-    * AI-powered analysis
-    * Natural conversation interface
-    * Real-time processing
+    * Smart text extraction.
+    * AI-powered analysis.
+    * Natural conversation interface.
+    * Real-time processing.
     """)
 
 # Footer

@@ -1,13 +1,15 @@
 import os
 from dotenv import load_dotenv
 import requests
-try:
-    from PyPDF2 import PdfReader
-except ImportError:
-    from PyPDF2 import PdfFileReader as PdfReader
+from PyPDF2 import PdfReader
 from docx import Document
 from pytesseract import image_to_string
 from PIL import Image
+import faiss
+import numpy as np
+import torch
+from transformers import AutoTokenizer, AutoModel
+import re
 
 load_dotenv()
 API_KEY = os.getenv("MISTRAL_API_KEY")
@@ -104,8 +106,46 @@ def chat_with_document(question, context):
         return {"error": str(e)}
 
 def preprocess_text(text):
-    """Preprocess text by removing unnecessary whitespace and special characters."""
-    import re
-    text = re.sub(r'\s+', ' ', text)  # Remove extra whitespaces
-    text = re.sub(r'[^a-zA-Z0-9\s.,?!]', '', text)  # Remove special characters
+    text = re.sub(r'\s+', ' ', text)  # Removing extra whitespaces
+    text = re.sub(r'[^a-zA-Z0-9\s.,?!]', '', text)  # Removing special characters
     return text
+
+def generate_embedding(text):
+    model_name = "distilbert-base-uncased"  # Ensuring the model is consistent
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModel.from_pretrained(model_name)
+
+    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=512)
+    with torch.no_grad():
+        embeddings = model(**inputs).last_hidden_state.mean(dim=1)  # Average embeddings of tokens
+    return embeddings.numpy().flatten()
+
+
+def extract_embeddings(documents):
+    embeddings = []
+    for doc in documents:
+        embeddings.append(generate_embedding(doc))
+    return np.array(embeddings)
+
+def setup_vector_db(documents):
+    if not documents:
+        dim = 768  
+        index = faiss.IndexFlatL2(dim)
+        return index, None
+    
+    document_embeddings = extract_embeddings(documents)
+    dim = document_embeddings.shape[1] 
+    index = faiss.IndexFlatL2(dim)
+    index.add(np.array(document_embeddings, dtype=np.float32))
+    return index, document_embeddings
+
+
+def store_document(index, document, embedding):
+    """Store a document's embedding in the vector database."""
+    if index.d != len(embedding):
+        raise ValueError(f"Embedding dimension {len(embedding)} does not match index dimension {index.d}.")
+    index.add(np.array([embedding], dtype=np.float32))
+
+
+def get_document_embedding(text):
+    return np.random.rand(512) 
