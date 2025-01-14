@@ -1,6 +1,6 @@
 # DocuMind AI Assistant
 
-📚 **DocuMind AI Assistant** is an intelligent document analysis and interactive AI chatbot that helps users extract key insights, analyze content, and ask questions about the document's information in real-time. The app supports PDF, Word, and Image files, making document processing easier and more interactive.
+📚 **DocuMind AI Assistant** is an intelligent document analysis and interactive AI chatbot that helps users extract key insights, analyze content, and ask questions about the document's information in real-time. This project employs a **Retrieval-Augmented Generation (RAG)** approach, enabling it to provide accurate and contextually relevant responses by combining document retrieval and AI-generated answers. The app supports PDF, Word, and Image files, making document processing easier and more interactive.
 
 ---
 
@@ -107,6 +107,7 @@ This project uses a combination of technologies to build the interactive and int
 - **python-docx**: Library to read and extract data from DOCX files.
 - **pytesseract**: Optical Character Recognition (OCR) tool for extracting text from images.
 - **Pillow**: Image processing library used for handling and manipulating images.
+- **FAISS**: Library for efficient similarity search and clustering of dense vectors.
 
 ---
 
