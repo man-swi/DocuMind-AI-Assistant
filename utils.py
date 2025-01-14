@@ -11,6 +11,7 @@ import torch
 from transformers import AutoTokenizer, AutoModel
 import re
 
+# Loading environment variables from .env file
 load_dotenv()
 API_KEY = os.getenv("MISTRAL_API_KEY")
 
