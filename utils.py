@@ -79,7 +79,7 @@ def analyze_text_with_ai(text):
         return {"error": str(e)}
 
 def chat_with_document(question, vector_db):
-    context = retrieve_context_from_db(question, vector_db)  # Use the vector DB to retrieve relevant context
+    context = retrieve_context_from_db(question, vector_db) 
     api_url = "https://api.mistral.ai/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {API_KEY}",
@@ -121,7 +121,7 @@ def preprocess_text(text):
 def generate_embedding(text):
     inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=512)
     with torch.no_grad():
-        embeddings = model(**inputs).last_hidden_state.mean(dim=1)  # Average embeddings of tokens
+        embeddings = model(**inputs).last_hidden_state.mean(dim=1)  
     return embeddings.numpy().flatten()
 
 def extract_embeddings(documents):
@@ -149,10 +149,7 @@ def store_document(index, document, embedding):
     index.add(np.array([embedding], dtype=np.float32))
 
 def retrieve_context_from_db(question, vector_db):
-    # This function should retrieve relevant context from the vector DB based on the question.
-    # You will need to implement the logic to query the vector DB and retrieve the context.
-    # For simplicity, returning a placeholder response here.
     return "This is a placeholder for retrieved context based on the question."
 
 def get_document_embedding(text):
-    return np.random.rand(512)  # Placeholder for embedding retrieval if needed
+    return np.random.rand(512)
