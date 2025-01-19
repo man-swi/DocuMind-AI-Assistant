@@ -10,13 +10,12 @@ from utils import (
     store_document,
     generate_embedding
 )
-from dotenv import load_dotenv
 
-# Loading environment variables from .env file
-load_dotenv()
+API_KEY = st.secrets["general"]["MISTRAL_API_KEY"]
 
-# API Key setup for Mistral AI
-API_KEY = os.getenv("MISTRAL_API_KEY")
+# Optional: Check if API key is set
+if API_KEY is None:
+    st.error("🔑 API key not found! Please set the `MISTRAL_API_KEY` in Streamlit Secrets.")
 
 # Streamlit page
 st.set_page_config(
