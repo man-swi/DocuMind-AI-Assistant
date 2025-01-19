@@ -20,7 +20,7 @@ API_KEY = os.getenv("MISTRAL_API_KEY")
 
 # Streamlit page
 st.set_page_config(
-    page_title="DocuMind AI Assistant",
+    page_title="DocuMind RAG Assistant",
     page_icon="📚",
     layout="wide"
 )
@@ -44,7 +44,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Main Title and Description
-st.markdown("<h1 class='main-header'>📚 DocuMind AI Assistant</h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='main-header'>📚 DocuMind RAG Assistant</h1>", unsafe_allow_html=True)
 st.markdown("<p class='sub-header'>Your Intelligent Document Analysis Companion</p>", unsafe_allow_html=True)
 
 # Feature Overview
@@ -69,7 +69,7 @@ if 'extracted_text' not in st.session_state:
     st.session_state.extracted_text = None
 
 if 'vector_db' not in st.session_state:
-    index, embeddings = setup_vector_db([])  # Initializing vector database
+    index, embeddings = setup_vector_db([]) 
     st.session_state.vector_db = index  # FAISS index
     st.session_state.embeddings = embeddings
 
@@ -89,8 +89,8 @@ if uploaded_file:
         processed_text = preprocess_text(st.session_state.extracted_text)
 
         # Generating embedding and store document
-        embedding = generate_embedding(st.session_state.extracted_text)
-        store_document(st.session_state.vector_db, st.session_state.extracted_text, embedding)
+        embedding = generate_embedding(processed_text)
+        store_document(st.session_state.vector_db, processed_text, embedding)
 
         # Creating tabs for different functionalities
         tab1, tab2 = st.tabs(["📊 Document Analysis", "💬 Chat with Document"])
