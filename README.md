@@ -19,7 +19,7 @@ To get the **DocuMind AI Assistant** up and running on your local machine, follo
 ### Prerequisites
 
 Ensure you have the following installed:
-- **Python 3.7+** 
+- **Python 3.7+**
 - **pip** (Python package installer)
 
 ### Installation Steps
