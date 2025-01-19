@@ -15,6 +15,11 @@ import re
 load_dotenv()
 API_KEY = os.getenv("MISTRAL_API_KEY")
 
+# Load tokenizer and model once at the start
+model_name = "distilbert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModel.from_pretrained(model_name)
+
 def extract_text_from_file(uploaded_file):
     file_type = uploaded_file.name.split(".")[-1].lower()
     text = ""
@@ -22,7 +27,7 @@ def extract_text_from_file(uploaded_file):
     if file_type == "pdf":
         pdf_reader = PdfReader(uploaded_file)
         for page in pdf_reader.pages:
-            text += page.extract_text()
+            text += page.extract_text() or ""
 
     elif file_type == "docx":
         doc = Document(uploaded_file)
@@ -45,6 +50,7 @@ def analyze_text_with_ai(text):
         "Content-Type": "application/json"
     }
     
+    # Text analysis
     payload = {
         "model": "mistral-large-latest",
         "messages": [
@@ -72,7 +78,8 @@ def analyze_text_with_ai(text):
     except Exception as e:
         return {"error": str(e)}
 
-def chat_with_document(question, context):
+def chat_with_document(question, vector_db):
+    context = retrieve_context_from_db(question, vector_db)  # Use the vector DB to retrieve relevant context
     api_url = "https://api.mistral.ai/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {API_KEY}",
@@ -112,15 +119,10 @@ def preprocess_text(text):
     return text
 
 def generate_embedding(text):
-    model_name = "distilbert-base-uncased"  # Ensuring the model is consistent
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModel.from_pretrained(model_name)
-
     inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=512)
     with torch.no_grad():
         embeddings = model(**inputs).last_hidden_state.mean(dim=1)  # Average embeddings of tokens
     return embeddings.numpy().flatten()
-
 
 def extract_embeddings(documents):
     embeddings = []
@@ -140,13 +142,17 @@ def setup_vector_db(documents):
     index.add(np.array(document_embeddings, dtype=np.float32))
     return index, document_embeddings
 
-
 def store_document(index, document, embedding):
     """Store a document's embedding in the vector database."""
     if index.d != len(embedding):
         raise ValueError(f"Embedding dimension {len(embedding)} does not match index dimension {index.d}.")
     index.add(np.array([embedding], dtype=np.float32))
 
+def retrieve_context_from_db(question, vector_db):
+    # This function should retrieve relevant context from the vector DB based on the question.
+    # You will need to implement the logic to query the vector DB and retrieve the context.
+    # For simplicity, returning a placeholder response here.
+    return "This is a placeholder for retrieved context based on the question."
 
 def get_document_embedding(text):
-    return np.random.rand(512) 
+    return np.random.rand(512)  # Placeholder for embedding retrieval if needed
