@@ -10,16 +10,17 @@ from utils import (
     store_document,
     generate_embedding
 )
+from dotenv import load_dotenv
 
-API_KEY = st.secrets["general"]["MISTRAL_API_KEY"]
+# Loading environment variables from .env file
+load_dotenv()
 
-# Optional: Check if API key is set
-if API_KEY is None:
-    st.error("🔑 API key not found! Please set the `MISTRAL_API_KEY` in Streamlit Secrets.")
+# API Key setup for Mistral AI
+API_KEY = os.getenv("MISTRAL_API_KEY")
 
 # Streamlit page
 st.set_page_config(
-    page_title="DocuMind RAG Assistant",
+    page_title="DocuMind AI Assistant",
     page_icon="📚",
     layout="wide"
 )
@@ -43,7 +44,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Main Title and Description
-st.markdown("<h1 class='main-header'>📚 DocuMind RAG Assistant</h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='main-header'>📚 DocuMind AI Assistant</h1>", unsafe_allow_html=True)
 st.markdown("<p class='sub-header'>Your Intelligent Document Analysis Companion</p>", unsafe_allow_html=True)
 
 # Feature Overview
@@ -88,8 +89,8 @@ if uploaded_file:
         processed_text = preprocess_text(st.session_state.extracted_text)
 
         # Generating embedding and store document
-        embedding = generate_embedding(processed_text)
-        store_document(st.session_state.vector_db, processed_text, embedding)
+        embedding = generate_embedding(st.session_state.extracted_text)
+        store_document(st.session_state.vector_db, st.session_state.extracted_text, embedding)
 
         # Creating tabs for different functionalities
         tab1, tab2 = st.tabs(["📊 Document Analysis", "💬 Chat with Document"])

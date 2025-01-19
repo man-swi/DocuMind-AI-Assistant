@@ -12,6 +12,4 @@ pandas>=1.5.0
 langchain
 chromadb
 sentence-transformers
-faiss-cpu
-transformers
-torch
+faiss-cpu  
